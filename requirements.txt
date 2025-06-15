@@ -4,3 +4,4 @@ actions-toolkit
 cloudscraper
 beautifulsoup4
 playwright
+PyExecJS
