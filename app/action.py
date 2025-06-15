@@ -169,7 +169,11 @@ class Action:
             results = []
             for pattern in patterns:
                 match = re.search(pattern, html, re.S)
-                results.append(match.group(1) if match else None
+                # 修复括号未闭合的问题
+                if match:
+                    results.append(match.group(1))
+                else:
+                    results.append(None)
             
             if all(results):
                 logger.info("成功获取流量信息")
