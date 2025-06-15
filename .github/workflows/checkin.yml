@@ -1,0 +1,32 @@
+name: CordCloud Auto Checkin
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 23 * * *"
+
+jobs:
+  checkin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install playwright
+          playwright install --with-deps
+
+      - name: Run CordCloud Checkin
+        env:
+          CORDCLOUD_EMAIL: ${{ secrets.CORDCLOUD_EMAIL }}
+          CORDCLOUD_PASSWD: ${{ secrets.CORDCLOUD_PASSWD }}
+          CORDCLOUD_CODE: ${{ secrets.CORDCLOUD_CODE }}
+          CORDCLOUD_HOST: https://cordcloud.us
+        run: python app/action.py
